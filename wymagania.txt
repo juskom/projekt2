@@ -1,0 +1,15 @@
+Termin: 06.06.2023 godz. 23:59
+Co najmniej jedna klasa abstrakcyjna i dziedziczenie po niej
+Interfejsy: własny i wbudowany; definicja interfejsu, jakieś implementacje po nim
+Czytelna wizualizacja grafu - drzewa Huffmana używanego do dekompresji (pokombinować jak się będzie rozciągać??): graficznie lub tekstowo (bardziej skomplikowane)
+Parametry: plik wejściowy, nazwa pliku (bo resztę ma wyczytać z pliku) jeśli tekstowy
+Jeśli graficzny to można wybór pliku za pomocą FileMenagera czy coś
+Jakieś testy - pliki
+Dokumentacja projektowa (jedna): jak użyć, info strikte projektowe, techniczne 
+- PDF (ale najlepiej napisana w Latex)
+- w części pierwszej opisane uruchomienie
+- jak program działa
+- jeśli ma interfejs graficzny to wstawić zrzut ekranu
+- jeśli tekstowy to parametry wejściowe
+- diagram klas*(np. w UML) - fajnie ale nie przymusowo, jeśli nie to schemat zależności klas, modułów, które występują w projekcie
+
