@@ -20,4 +20,8 @@ public class Header {
     public Byte getFollowingZeros() {
         return followingZeros;
     }
+
+    public boolean startsWith(String authors) {
+        return true;
+    }
 }

@@ -14,7 +14,7 @@ class HuffmanDecompression {
 
     public static void main(String[] args) throws IOException {
         HuffmanDecompression decompressor = new HuffmanDecompression();
-        decompressor.decompress("E:\\pw\\JIMP2\\piano.comp");
+        decompressor.decompress("C:\\Users\\Justyna\\Desktop\\studia\\GitHub\\projekt1\\music1.comp");
     }
 
     public void decompress(String filePath) throws IOException {
@@ -26,7 +26,7 @@ class HuffmanDecompression {
             root = new Node();
             readDictionary(fis, root);
 
-            try (FileOutputStream fos = new FileOutputStream("E:\\pw\\JIMP2\\piano.mp3")) {
+            try (FileOutputStream fos = new FileOutputStream("C:\\Users\\Justyna\\Desktop\\studia\\sem2\\jimp\\m1_decomp.mp3")) {
                 decompressData(fis, fos, zeros);
             }
         }

@@ -13,10 +13,10 @@ public static File outfile;
             System.err.println("Za mało argumentów!");
 
         }
-        infile = new File(args[0]);
-        outfile = new File(args[1]);
+        //infile = new File(args[0]);
+        //outfile = new File(args[1]);
         System.out.println("hello world");
-        FileOpener fileOpener = new FileOpenerImpl("C:\\Users\\Justyna\\Desktop\\studia\\sem2\\jimp\\projekt2\\klasy\\src\\ala.comp");
+        FileOpener fileOpener = new FileOpenerImpl("C:\\Users\\Justyna\\Desktop\\studia\\GitHub\\projekt2\\klasy\\src\\ala.comp");
         fileOpener.doJob();
     }
 }
