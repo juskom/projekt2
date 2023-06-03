@@ -11,13 +11,34 @@ class HuffmanDecompression {
     private static final int MAXROZMIARDRZEWA = 256;
     private static final int DICT_END = (int) '!';
     private Node root;
-
+    private int przesuniecie;
+    private String haslo;
+    private int comp_level;
     public static void main(String[] args) throws IOException {
         HuffmanDecompression decompressor = new HuffmanDecompression();
-        decompressor.decompress("E:\\pw\\JIMP2\\piano.comp");
+        decompressor.decompress("E:\\pw\\JIMP2\\alaszyfr.txt", "E:\\pw\\JIMP2\\aladeszyfr.txt", "", 0);
     }
 
-    public void decompress(String filePath) throws IOException {
+    public void decompress(String filePath, String outputFilePath, String password, int compLevel) throws IOException {
+        this.haslo = password;
+        this.comp_level = compLevel;
+        this.przesuniecie = password.chars().sum();
+
+        if (comp_level == 0) {
+            try (FileInputStream fis = new FileInputStream(filePath);
+                 FileOutputStream fos = new FileOutputStream(outputFilePath)) {
+
+                int znak;
+                while ((znak = fis.read()) != -1) {
+                    if (password != null && !password.isEmpty()) {
+                        znak = (znak + 256 - przesuniecie) % 256;
+                    }
+                    fos.write(znak);
+                }
+                return;
+            }
+        }
+
         try (FileInputStream fis = new FileInputStream(filePath)) {
             byte[] buffer = new byte[4];
             fis.read(buffer);
@@ -26,7 +47,7 @@ class HuffmanDecompression {
             root = new Node();
             readDictionary(fis, root);
 
-            try (FileOutputStream fos = new FileOutputStream("E:\\pw\\JIMP2\\piano.mp3")) {
+            try (FileOutputStream fos = new FileOutputStream(outputFilePath)) {
                 decompressData(fis, fos, zeros);
             }
         }
@@ -49,6 +70,9 @@ class HuffmanDecompression {
             fis.skip(-3); // Powrót do poprzedniej pozycji strumienia
 
             byteValue = fis.read();
+            if (!haslo.isEmpty()) {
+                byteValue = (byteValue + 256 - przesuniecie) % 256;
+            }
             codeLength = fis.read();
             int bitCount = 0;
             byte bit = 0;
