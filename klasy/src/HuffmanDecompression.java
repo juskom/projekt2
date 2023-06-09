@@ -17,16 +17,15 @@ class Node {
         private static final int MAXROZMIARDRZEWA = 256;
         private static final int DICT_END = (int) '!';
         private Node root;
-
         private static final Tree tree = new Tree();
+        private Map<Integer, String> codesMap = new HashMap<>();
+        public Map<String, Integer> reverseCodesMap = new HashMap<>();
 
         public static void main(String[] args) throws IOException {
             HuffmanDecompression decompressor = new HuffmanDecompression();
-            decompressor.decompress("C:\\Users\\Justyna\\Desktop\\studia\\GitHub\\projekt1\\ala.comp");
-//            tree.addNode("A2");
-//            tree.addNode("A1");
-//            tree.addEdge("A2","A1");
-            tree.visualizeHuffmanTree();
+            decompressor.decompress("C:\\Users\\Justyna\\Desktop\\studia\\GitHub\\projekt1\\pan_tadeusz.comp");
+            BinaryTreeVisualiserImpl binaryTreeBuilder = new BinaryTreeVisualiserImpl();
+            binaryTreeBuilder.displayTreeFromMap(decompressor.reverseCodesMap);
         }
 
         public void decompress(String filePath) throws IOException {
@@ -45,8 +44,6 @@ class Node {
                 }
             }
         }
-
-        private Map<Integer, String> codesMap = new HashMap<>();
 
         private void readDictionary(FileInputStream fis, Node node) throws IOException {
             for (int i = 0; i < MAX; i++) {
@@ -99,6 +96,7 @@ class Node {
                     codeBuilder.append(codeBuffer[i]);
                 }
                 codesMap.put(byteValue, codeBuilder.toString());
+                reverseCodesMap.put( codeBuilder.toString(),byteValue);
             }
 
             // Wypisujemy odczytane kody
