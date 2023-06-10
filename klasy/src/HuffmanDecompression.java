@@ -16,7 +16,7 @@ class HuffmanDecompression {
     private int comp_level;
     public static void main(String[] args) throws IOException {
         HuffmanDecompression decompressor = new HuffmanDecompression();
-        decompressor.decompress("E:\\pw\\JIMP2\\alaszyfr.txt", "E:\\pw\\JIMP2\\aladeszyfr.txt", "", 0);
+        decompressor.decompress("E:\\pw\\JIMP2\\ala.comp", "E:\\pw\\JIMP2\\aladecomp.txt", "", 1);
     }
 
     public void decompress(String filePath, String outputFilePath, String password, int compLevel) throws IOException {
@@ -43,12 +43,13 @@ class HuffmanDecompression {
             byte[] buffer = new byte[4];
             fis.read(buffer);
             int zeros = buffer[3] & 0xFF;
+            int compxor = buffer[2] & 0xFF;
 
             root = new Node();
             readDictionary(fis, root);
 
             try (FileOutputStream fos = new FileOutputStream(outputFilePath)) {
-                decompressData(fis, fos, zeros);
+                decompressData(fis, fos, zeros, compxor);
             }
         }
     }
@@ -102,7 +103,15 @@ class HuffmanDecompression {
             for (int i = 0; i < codeLength; i++) {
                 codeBuilder.append(codeBuffer[i]);
             }
-            codesMap.put(byteValue, codeBuilder.toString());
+            try {
+                if (codesMap.containsKey(byteValue)) {
+                    throw new IllegalArgumentException("Kod dla danego byteValue jest już zawarty w codesMap");
+                }
+                codesMap.put(byteValue, codeBuilder.toString());
+            } catch (IllegalArgumentException e) {
+                System.err.println(e.getMessage());
+                System.exit(1);
+            }
         }
 
         // Wypisujemy odczytane kody
@@ -135,11 +144,13 @@ class HuffmanDecompression {
 
 
 
-    private void decompressData(FileInputStream fis, FileOutputStream fos, int zeros) throws IOException {
+    private void decompressData(FileInputStream fis, FileOutputStream fos, int zeros, int compxor) throws IOException {
+        int decompxor = 0;
         int bitCount = 0;
         int byteValue = fis.read();
         StringBuilder currentCode = new StringBuilder();
         Node node = root;
+        //System.out.println("odczytany compxor: " + compxor);
 
         while (byteValue != -1) {
             for (int i = 7; i >= 0; i--) {
@@ -154,6 +165,8 @@ class HuffmanDecompression {
                 }
                 if (node.left == null && node.right == null) {
                     fos.write(node.data);
+                    decompxor ^= node.data;
+                    //System.out.println("obecna wartosc decompxor: " + decompxor);
                     node = root;
                     currentCode.setLength(0);
                 }
@@ -166,6 +179,9 @@ class HuffmanDecompression {
             }
             byteValue = fis.read();
         }
+
+        if(compxor == decompxor) System.out.println("Weryfikacja sum kontrolnych xor zakończona pomyślnie!");
+        else System.out.println("Weryfikacja sum kontrolnych xor zakończona niepowodzeniem!");
     }
 
 }
