@@ -1,6 +1,6 @@
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Arrays;
 
 public abstract class AbstractFileOpener implements FileOpener {
 
@@ -24,8 +24,8 @@ public abstract class AbstractFileOpener implements FileOpener {
         header = readHeader(fileBytes);
         boolean isHeaderGood = header.startsWith("PK");
         if (!isHeaderGood) {
-            System.out.println("Podano niepoprawny plik do dekompresji!" + fileName);
-            System.exit(5);
+            System.out.println("Podano niepoprawny plik do dekompresji, bądź plik został skompresowany przy pomocy kompresji zerowej. Stosuję dekompresję zerową dla pliku " + fileName);
+            World.clvl = 0;
         } else {
             System.out.println("Nagłówek poprawny");
             System.out.println("Nagłówek: " + header.getAuthors() + ", suma kontrolna sprzed kompresji: " + header.getControlSum() + ", zera dopełnienia: " + header.getFollowingZeros());

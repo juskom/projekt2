@@ -3,7 +3,6 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.MultiGraph;
 import org.graphstream.ui.layout.HierarchicalLayout;
-import org.graphstream.ui.view.Viewer;
 
 import java.util.Map;
 
@@ -22,7 +21,7 @@ public class BinaryTreeVisualiserImpl implements BinaryTreeVisualiser {
 
         Node root = graph.addNode("0");
         root.addAttribute("ui.label", "root");
-        root.addAttribute("ui.style", "text-size: 35;");
+        root.addAttribute("ui.style", "text-size: 35px;");
         root.setAttribute("y", 0);
         root.setAttribute("x", 0);
 
@@ -39,16 +38,15 @@ public class BinaryTreeVisualiserImpl implements BinaryTreeVisualiser {
             }
             Integer value = map.get(key);
             Node node = graph.getNode(nodeName);
-            node.setAttribute("label", value.toString());
-            node.addAttribute("ui.style", "text-size: 30;");
+            node.setAttribute("label", Character.toString((char) value.intValue()));
+            node.addAttribute("ui.style", "text-size: 30px;");
             childrenRemover(node, graph);
         }
 
         HierarchicalLayout layout = new HierarchicalLayout();
         graph.addAttribute("ui.stylesheet", "node { shape: box; size: 10px, 10px; fill-color: #EEE; stroke-mode: plain; stroke-color: #222;}");
 
-        Viewer viewer = graph.display();
-        viewer.disableAutoLayout();
+        ZoomAtMousePosition zoomableViewer = new ZoomAtMousePosition(graph);
     }
 
     private void childrenRemover(Node node, Graph graph) {
@@ -74,7 +72,7 @@ public class BinaryTreeVisualiserImpl implements BinaryTreeVisualiser {
         Node leftChild = graph.addNode(parent.getId() + "L");
         Edge edge = graph.addEdge(parent.getId() + "-" + leftChild.getId(), parent, leftChild);
         edge.addAttribute("label", "1");
-        edge.addAttribute("ui.style", "text-size: 30;");
+        edge.addAttribute("ui.style", "text-size: 30px;");
 
         // Wywołanie rekurencyjne dla lewego dziecka
         buildBinaryTree(graph, leftChild, level + 1, height);
